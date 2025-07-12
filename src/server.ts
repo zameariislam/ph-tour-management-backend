@@ -1,13 +1,14 @@
+
 import { Server } from "http";
 import mongoose from "mongoose";
 import app from "./app";
 import { loadEnvVar } from "./app/config/env";
 
-
+ 
  let server:Server;
  
- const envVariable=loadEnvVar()
- console.log(envVariable)
+export const envVariable=loadEnvVar()
+//  console.log(envVariable)
 
   const startServer=async()=>{
 

@@ -1,47 +1,30 @@
 
-import { log } from 'console';
-import  express, { Application,NextFunction,Request,Response } from 'express' ;
+
+import  express, { Application} from 'express' ;
+
+
+import cors from 'cors'
+import { router } from './app/routes';
+
+import { globalErrorHandler } from './app/middlewares/globalErrorHandler';
+import { notFound } from './app/middlewares/notFound';
 
 
 const app:Application=express()
-
-app.get('/', async (req:Request,res:Response)=>{
-
-
-    throw new Error('hello')
+app.use(cors());
 
 
-  
-    try{
-
-      
-         res.status(200).json({
-      message:'Welcome to tour management system'
-    })
-
-    }catch(error:any){
-         res.status(500).json({
-      message:'hello from error'
-    })
-
-    }
-
-   
-
-   })
+app.use(express.json());
 
 
+app.use('/api/v1', router);
 
+// Global error handler should be the last middleware
 
+app.use (notFound)
 
-   app.use(( err:any,req:Request,res:Response,next:NextFunction)=>{
-    console.log('hello from middle')
+app.use(globalErrorHandler);
 
-    res.status(401).json({
-        message:err.message
-    })
-
-   })
 
 
    export default app
