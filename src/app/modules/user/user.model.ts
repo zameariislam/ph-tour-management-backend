@@ -2,6 +2,7 @@ import mongoose, { Schema } from "mongoose";
 import { IAuthProvider, IsActive, IUser, Role } from "./user.interface";
 
 import bcrypt from 'bcrypt'
+import { AppError } from "../../errorHelper/AppError";
 
 
 const authProviderSchema= new Schema<IAuthProvider>({
@@ -69,9 +70,11 @@ const userSchema=new Schema< IUser>({
 
 
     userSchema.pre('save', async function(){
-          console.log('form pre',this)
 
-          this.password= await bcrypt.hash(this.password as string,10)
+      
+             this.password= await bcrypt.hash(this.password  as string,12)
+
+    
           
 
     })

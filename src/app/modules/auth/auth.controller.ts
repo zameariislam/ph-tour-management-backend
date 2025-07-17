@@ -11,20 +11,38 @@ import statusCode from 'http-status-codes';
 
 const credentialLogin=catchAsync (async (req:Request, res:Response,next:NextFunction)=>{
 
-  
-
 
          const token= await AuthServices.credentialLogin(req.body);
-
-
-        
-
-         
+ 
          sendResponse(res, {
             success:true,
             statusCode:statusCode.CREATED,
             message:'User Loggedin successfully',
             data:token
+
+         } )
+
+          
+
+})
+
+
+
+
+
+const getAllUsers=catchAsync (async (req:Request, res:Response,next:NextFunction)=>{
+
+
+
+    const users= await AuthServices.getAllUsers()
+
+   
+  
+         sendResponse(res, {
+            success:true,
+            statusCode:statusCode.CREATED,
+            message:'All Users  Retrieved successfully',
+            data:users
 
          } )
 
@@ -36,7 +54,9 @@ const credentialLogin=catchAsync (async (req:Request, res:Response,next:NextFunc
 
 
 
+
 export const AuthController={
-    credentialLogin
+    credentialLogin,
+    getAllUsers
 
 }

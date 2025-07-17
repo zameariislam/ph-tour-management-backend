@@ -8,7 +8,7 @@ import httpStatus from "http-status-codes"
 const createUSer= async (payload:Partial<IUser>):Promise<IUser|null>=>{
 
     const {email,...rest}=payload
-
+      
 
     const isUserExist= await User.find({email});
 
@@ -24,7 +24,10 @@ const createUSer= async (payload:Partial<IUser>):Promise<IUser|null>=>{
         provider:"credential",
         providerId:email as string
      }
+      
+  
 
+ 
 
     const user= await User.create({
         email,

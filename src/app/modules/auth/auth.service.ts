@@ -9,15 +9,19 @@ import bcrypt from "bcrypt"
 
  
 import httpStatus from "http-status-codes"
+import { generateToken } from "../../utils/jwt";
 
 
  const credentialLogin=async (payload:Partial<IUser>)=>{
       const {email, password,...rest}=payload
 
+
+
+      console.log('aim in cred')
   
     
    const isUserExist= await User.find({email});
-      
+      console.log('aim in cred',isUserExist)
 
          if(isUserExist.length==0){
      
@@ -29,6 +33,7 @@ import httpStatus from "http-status-codes"
 
 
  const isPasswordMatched= await bcrypt.compare(password as string,isUserExist[0].password as string );
+  console.log('pass',isPasswordMatched)
 
   
 
@@ -39,31 +44,17 @@ import httpStatus from "http-status-codes"
 
     const jwtPayload={
         userId:isUserExist[0].id as string,
-        email,
+        email:email as string,
         role:isUserExist[0].role
     }
 
+    
 
+    console.log('access',envVariable.JWT_ACCESS_SECRET)
 
-const generateToken=(payload:typeof jwtPayload,secret:string,expiresIn:string)=>{
+  
+    const token= generateToken(jwtPayload, envVariable.JWT_ACCESS_SECRET as string, envVariable.JWT_ACCESS_EXPIRES)
 
-
-//     const token=  jwt.sign(payload,secret,{
-//         expiresIn
-//     })
-
-//     return token
-
-
-// }
-
-
-// const token= generateToken(jwtPayload,envVariable.JWT_ACCESS_SECRET as string,envVariable.JWT_ACCESS_EXPIRES)
-
-      
-    const token=  jwt.sign({name:'Zameari'},'secret',{
-        expiresIn:'1hr'
-    })
    
    
    console.log('token',token)
@@ -72,24 +63,24 @@ const generateToken=(payload:typeof jwtPayload,secret:string,expiresIn:string)=>
 
 return token
 
-    
 
 
  }
 
-  const token=  jwt.sign(jwtPayload,
-  'secret',
-  {
-    expiresIn:'1hr'
-  }
-)
-   
-   
-   console.log('token',token)
 
-   
+  const getAllUsers=async ():Promise<IUser[]>=>{
 
-return token
+
+    console.log('i am from users auth service')
+
+
+    const users=  await User.find({})
+
+    
+  
+
+    return users
+
 
 
 
@@ -97,5 +88,6 @@ return token
 
 
  export const AuthServices={
-    credentialLogin
+    credentialLogin,
+    getAllUsers
  }

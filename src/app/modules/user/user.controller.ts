@@ -10,9 +10,9 @@ import { sendResponse } from '../../utils/sendResponse'
 
 
 const createUser=catchAsync (async (req:Request, res:Response,next:NextFunction)=>{
+  console.log('data',req.body)
 
-    //  throw  new AppError('something fake happened',400)
-        // throw new Error('Error from regular Error')
+     
          const user= await UserServices.createUSer(req.body);
 
          
