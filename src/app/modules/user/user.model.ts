@@ -1,6 +1,8 @@
 import mongoose, { Schema } from "mongoose";
 import { IAuthProvider, IsActive, IUser, Role } from "./user.interface";
 
+import bcrypt from 'bcrypt'
+
 
 const authProviderSchema= new Schema<IAuthProvider>({
      provider:{ type:String,
@@ -64,6 +66,15 @@ const userSchema=new Schema< IUser>({
         versionKey:false
     })
 
+
+
+    userSchema.pre('save', async function(){
+          console.log('form pre',this)
+
+          this.password= await bcrypt.hash(this.password as string,10)
+          
+
+    })
 
 
   export  const User=  mongoose.model<IUser> ('User',userSchema)

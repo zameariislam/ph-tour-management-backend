@@ -12,8 +12,6 @@ const createUSer= async (payload:Partial<IUser>):Promise<IUser|null>=>{
 
     const isUserExist= await User.find({email});
 
-
-
     
     if(isUserExist.length){
      
