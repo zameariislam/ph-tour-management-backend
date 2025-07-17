@@ -6,20 +6,25 @@ import http from 'http-status-codes'
 import { UserServices } from './user.service'
 import { AppError } from '../../errorHelper/AppError'
 import { catchAsync } from '../../utils/catchAsync'
+import { sendResponse } from '../../utils/sendResponse'
+
 
 const createUser=catchAsync (async (req:Request, res:Response,next:NextFunction)=>{
 
-
-    
-
-        //  throw  new AppError('something fake happened',400)
+    //  throw  new AppError('something fake happened',400)
         // throw new Error('Error from regular Error')
-         const user= await UserServices.createUSer(req.body)
+         const user= await UserServices.createUSer(req.body);
 
-         res.status(http.CREATED).json({
-            message:'User is ceated',
-            user
-         })
+         
+         sendResponse(res, {
+            success:true,
+            statusCode:http.CREATED,
+            message:'User is created successfully',
+            data:user
+
+         } )
+
+         
 
     
 
@@ -29,15 +34,23 @@ const getUserAllUsers= catchAsync( async(req,res,next)=>{
 
     const users= await UserServices.getAllUSers();
 
-    res.status(http.OK).json({
-        success:true,
-        message:' All Users are retrieved Successfully',
-        users
+    sendResponse(res,{
+         success:true,
+          statusCode:http.OK,
+        message:'All Users are retrieved Successfully',
+        data:users,
+        
+        meta:{
+            total:users.total
+        }
     })
 
+    })
+
+   
 
 
-})
+
 
 
 

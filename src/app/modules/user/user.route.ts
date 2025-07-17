@@ -1,6 +1,13 @@
 
-   import express,{request,response} from 'express'
+   import express,{NextFunction, Request,Response} from 'express'
 import { UserController } from './user.controller'
+
+
+
+import { validateRequest } from '../../middlewares/validateRequest'
+import { createUserZodSchema } from './user.validation'
+
+
 
    
    
@@ -9,8 +16,10 @@ import { UserController } from './user.controller'
 
 
    
-router.post('/register',UserController.createUser)
-router.get('/',UserController.getUserAllUsers)
+router.post('/register',
+ validateRequest (createUserZodSchema),
+    UserController.createUser)
+router.get('/', UserController.getUserAllUsers)
 
 
 export const UserRoutes=router
