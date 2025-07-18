@@ -3,6 +3,7 @@ import { Server } from "http";
 import mongoose from "mongoose";
 import app from "./app";
 import { loadEnvVar } from "./app/config/env";
+import { seedSuperAdmin } from "./app/utils/superAdmin";
 
  
  let server:Server;
@@ -23,6 +24,9 @@ export const envVariable=loadEnvVar()
             console.log(` server is listening on port ${envVariable.PORT}`)
         })
 
+
+
+
        
 
     }catch(error:any){
@@ -34,8 +38,17 @@ export const envVariable=loadEnvVar()
    
 
   }
+(
+ async ()=>{
+    await startServer()
 
-   startServer()
+  await  seedSuperAdmin()
+
+  })()
+
+   
+
+
 
 
    process.on('unhandledRejection',(err)=>{

@@ -7,12 +7,14 @@ import { UserServices } from './user.service'
 import { AppError } from '../../errorHelper/AppError'
 import { catchAsync } from '../../utils/catchAsync'
 import { sendResponse } from '../../utils/sendResponse'
+import jwt, { JwtPayload } from 'jsonwebtoken'
+import { envVariable } from '../../../server'
 
 
 const createUser=catchAsync (async (req:Request, res:Response,next:NextFunction)=>{
+  console.log('data',req.body)
 
-    //  throw  new AppError('something fake happened',400)
-        // throw new Error('Error from regular Error')
+     
          const user= await UserServices.createUSer(req.body);
 
          
@@ -29,6 +31,52 @@ const createUser=catchAsync (async (req:Request, res:Response,next:NextFunction)
     
 
 })
+
+
+
+const updateUser=catchAsync (async (req:Request, res:Response,next:NextFunction)=>{
+  console.log('from update user')
+
+  
+
+  const userId=req.params.id;
+  const token=req.headers.authorization?.split(' ')[1] as string
+
+  
+
+ 
+
+  if(!token){
+    throw new AppError(http.BAD_REQUEST,'You dont have access')
+  }
+
+
+   const verifyToken= jwt.verify(token ,envVariable.JWT_ACCESS_SECRET as string ) as JwtPayload
+
+ 
+   const payload=req.body
+
+  
+     
+         const user= await UserServices.updateUSer(userId,payload,verifyToken );
+
+         
+         sendResponse(res, {
+            success:true,
+            statusCode:http.CREATED,
+            message:'User is Update successfully',
+            data:user
+
+         } )
+
+         
+
+    
+
+})
+
+
+
 
 const getUserAllUsers= catchAsync( async(req,res,next)=>{
 
@@ -56,7 +104,8 @@ const getUserAllUsers= catchAsync( async(req,res,next)=>{
 
  export  const UserController={
     createUser,
-    getUserAllUsers
+    getUserAllUsers,
+    updateUser
          
 
  }

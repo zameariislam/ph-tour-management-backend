@@ -9,6 +9,8 @@ import { Request,Response,NextFunction } from "express";
 
         try{
 
+            console.log('vali',req.body)
+
               
          req.body=await  zodSchema.parseAsync(req.body)
          next()

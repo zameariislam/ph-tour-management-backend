@@ -1,6 +1,9 @@
 import mongoose, { Schema } from "mongoose";
 import { IAuthProvider, IsActive, IUser, Role } from "./user.interface";
 
+import bcrypt from 'bcrypt'
+import { AppError } from "../../errorHelper/AppError";
+
 
 const authProviderSchema= new Schema<IAuthProvider>({
      provider:{ type:String,
@@ -18,6 +21,9 @@ const authProviderSchema= new Schema<IAuthProvider>({
 
 
 const userSchema=new Schema< IUser>({
+
+    
+       
     name:{
         type:String,
         required:[true,'Please enter your name'],
@@ -64,6 +70,17 @@ const userSchema=new Schema< IUser>({
         versionKey:false
     })
 
+
+
+    userSchema.pre('save', async function(){
+
+      
+             this.password= await bcrypt.hash(this.password  as string,12)
+
+    
+          
+
+    })
 
 
   export  const User=  mongoose.model<IUser> ('User',userSchema)
