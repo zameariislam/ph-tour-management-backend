@@ -22,6 +22,10 @@ router.post('/login',AuthController.credentialLogin)
 router.get('/all-users',checkAuth(Role.ADMIN,Role.SUPER_ADMIN)
     , AuthController.getAllUsers)
 
+    
+router.post('/refresh-token',
+     AuthController.createNewAccessToken)
+
 
 
 

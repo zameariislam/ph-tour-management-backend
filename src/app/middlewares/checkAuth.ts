@@ -12,18 +12,22 @@ export const checkAuth=(...authRoles:string[])=> async (req:Request, res:Respons
 
 try{
    
-    console.log('i am here')
+    console.log('i am in auth')
 
     
         const token= req.headers.authorization?.split(' ')[1];
 
-        console.log('ftoken',token)
+        console.log('token form auth',token)
 
     if(!token){
          throw new AppError(403,'No Token received')
     }
 
     const verifiedToken= verifyToken(token, String(envVariable.JWT_ACCESS_SECRET)) as JwtPayload
+
+
+   
+   
    
 
    
